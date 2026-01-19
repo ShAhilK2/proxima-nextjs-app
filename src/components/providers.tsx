@@ -24,22 +24,19 @@ const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <ClerkProvider
-      appearance={{
-        theme: dark,
-      }}
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem
+      disableTransitionOnChange
     >
-      <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Authenticated>
-            <UserButton />
-            {children}
-          </Authenticated>
+      <ClerkProvider
+        appearance={{
+          theme: dark,
+        }}
+      >
+        <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+          <Authenticated>{children}</Authenticated>
 
           <Unauthenticated>
             <UnauthenticatedView />
@@ -48,8 +45,8 @@ export function Providers({ children }: { children: ReactNode }) {
           <AuthLoading>
             <AuthLoadingView />
           </AuthLoading>
-        </ThemeProvider>
-      </ConvexProviderWithClerk>
-    </ClerkProvider>
+        </ConvexProviderWithClerk>
+      </ClerkProvider>
+    </ThemeProvider>
   );
 }
